@@ -10,7 +10,7 @@ function onScoreUpdate(dropPosition, bounciness, size, bucketLabel) {
 
 function runAnalysis() {
   // Get the training and test data.
-  const testSetSize = 100;
+  const testSetSize = 10;
   let accuracy = 0;
   const [trainSet, testSet] = splitDataset(outputs, testSetSize);
 
