@@ -12,7 +12,7 @@ function runAnalysis() {
   // Get the training and test data.
   const testSetSize = 10;
   let accuracy = 0;
-  const [trainSet, testSet] = splitDataset(outputs, testSetSize);
+  const [trainSet, testSet] = splitDataset(normalize(outputs, 3), testSetSize);
 
   // Test different k values.
   _.range(1, 20).forEach((k) => {
@@ -74,6 +74,25 @@ const splitDataset = (data, testCount) => {
   return [trainSet, testSet];
 };
 
+// Normalizing the data.
+const normalize = (data, featureCount) => {
+  const clonedData = _.clone(data);
+
+  for (let i = 0; i < featureCount; i++) {
+    const column = _.map(clonedData, (row) => row[i]);
+
+    const min = _.min(column);
+    const max = _.max(column);
+
+    for (let j = 0; j < clonedData.length; j++) {
+      // Normalizing formula: (x - min) / (max - min).
+      clonedData[j][i] = (clonedData[j][i] - min) / (max - min);
+
+      // console.log(clonedData[j][i]);
+    }
+  }
+  return clonedData;
+};
 // Get the best k value.
 // function runAnalysis() {
 //   // Get the training and test data.
