@@ -52,7 +52,18 @@ const knn = (data, point, k) => {
     .value();
 };
 
-const distance = (pointA, pointB) => Math.abs(pointA - pointB);
+const distance = (pointA, pointB) => {
+  // pointA = 300, pointB = 400
+  // pointA = [300, .5, 16], pointB = [400, .55, 16]
+
+  return (
+    _.chain(pointA)
+      .zip(pointB)
+      .map(([a, b]) => (a - b) ** 2)
+      .sum()
+      .value() ** 0.5
+  );
+};
 
 // With Shuffle.
 const splitDataset = (data, testCount) => {
@@ -63,6 +74,37 @@ const splitDataset = (data, testCount) => {
 
   return [trainSet, testSet];
 };
+
+// Get the best k value.
+// function runAnalysis() {
+//   // Get the training and test data.
+//   const testSetSize = 10;
+//   let accuracy = 0;
+//   const [trainSet, testSet] = splitDataset(outputs, testSetSize);
+
+//   // Test different k values.
+//   _.range(1, 20).forEach((k) => {
+//     // Run the test set through the knn.
+//     testSet.forEach((row) => {
+//       const dropPosition = row[0];
+//       const currentBucket = row[3];
+//       // Get the nearest neighbors, compare the current bucket to the nearest neighbors, and give me the most common bucket.
+//       const prodictBucket = knn(trainSet, dropPosition, k);
+
+//       // Check the accuracy.
+//       if (+prodictBucket === +currentBucket) {
+//         accuracy++;
+//       }
+
+//       // console.log(`Current: ${currentBucket}, Predict: ${prodictBucket}`);
+//     });
+
+//     // console.log('--------');
+//     console.log(`K: ${k}, Accuracy: ${(accuracy / testSetSize) * 100}%`);
+//     accuracy = 0;
+//   });
+//   console.log('=============================');
+// }
 
 // Without Shuffle.
 // const splitDataset = (data, testCount) => {
