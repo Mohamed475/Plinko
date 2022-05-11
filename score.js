@@ -21,7 +21,7 @@ function runAnalysis() {
       const dropPosition = row[0];
       const currentBucket = row[3];
       // Get the nearest neighbors, compare the current bucket to the nearest neighbors, and give me the most common bucket.
-      const prodictBucket = knn(trainSet, dropPosition, k);
+      const prodictBucket = knn(trainSet, _.initial(row), k);
 
       // Check the accuracy.
       if (+prodictBucket === +currentBucket) {
@@ -41,7 +41,7 @@ function runAnalysis() {
 // Create a knn that takes a dataset and a point that we want to predict.
 const knn = (data, point, k) => {
   return _.chain(data)
-    .map((row) => [distance(row[0], point), row[3]]) // [distance, bucket]
+    .map((row) => [distance(_.initial(row), point), _.last(row)]) // [{distance, bouncies, ballSize}=>Features, bucket=>Label]
     .sortBy((row) => row[0]) // [nearest distance, bucket]
     .slice(0, k) // get the first k
     .countBy((row) => row[1]) // look for the most common repeated value
@@ -65,7 +65,6 @@ const distance = (pointA, pointB) => {
   );
 };
 
-// With Shuffle.
 const splitDataset = (data, testCount) => {
   const shuffled = _.shuffle(data);
 
