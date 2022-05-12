@@ -19,7 +19,7 @@ function runAnalysis() {
   const from = 1;
   const to = 11;
   _.range(from, to).forEach((k) => {
-    // Train our algorithm using the testSet point with all trainingSet records
+    // Train our algorithm using the testSet point with all trainingSet records.
     testSet.forEach((row) => {
       const testSetPoint = row[0];
       const testSetBucket = row[3];
